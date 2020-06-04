@@ -1,0 +1,2695 @@
+
+#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js@3.8.0
+#+TITLE: Test
+* git
+takes "snapshots" of you files that you can modify, stage, and when you are ready to update the snapshot you simply commit your changes with the commit message.
+1) turn a folder into a Local Git Repo with:
+   #+BEGIN_SRC sh
+# command for local git
+git init # turns folder into a local git repo, creates a git folder, don't touch it
+git config --global user.name "laurent" # add our name and email address to your init config
+git config --global user.email "laurent_pinson@hotmail.com"
+touch test.txt # creates a file we will use
+nano test.txt # open it and make some changes
+git add test.txt # will add the file to the index/staging area
+git add . # will add all files within the current directory
+git rm --cached index.html # git restore --staged test.txt
+git add test.txt # we add test.txt again to the stage
+# also possible to "git add *.txt"
+git status # check status of the working tree
+git commit -a # will commit and prompt you for a commit message. Commits to master by default.
+# you can commit to branch too
+git branch my_new_branch # will create the branch my_new_branch
+git checkout my_new_branch # will bring you to the branch. Anything  you modify or create will only exist within that branch.
+nano login.txt
+# Want to merge the login branch with the master branch? No pb, just go back to the master and merge
+git checkout master
+git merge login
+touch .gitignore  # creates a document that will list the files and directories you wish to be ignored during commits
+# ex: test.txt /a_directory *.txt all text files etc
+
+# see also:
+# git status
+# git diff (shows the differences before that are staged/added)
+# git add -p (will go through differences and ask you to confirm stage/add)
+
+# commands for remote git?
+git remote # will display the remote repo you might have referenced
+# create a new repo in your github account, then add the link:
+git remote add origin https://github.com/laurentHYZ/test.git
+# prepare your github username and pasword, you will be prompted for them soom
+git push -u origin master # here you will be asked for your github info
+# " branch 'master' set up to track remote branch 'master' from 'origin'"
+
+# from that point on if you make any change to a file here is what you need to do:
+git push # you will be asked for your credential each time
+
+# once you have a remote repo you can try to clone it into
+# if you do not mention the target folder github will create a default folder with same name as origin.
+git clone https://github.com/laurentHYZ/test.git test_local
+git pull # pull latest from the remote repo
+git clone # clone remote directory into new directory
+
+
+   #+END_SRC
+* Install emacs 26+
+* Start configurating it
+You can do that by yourself, you can clone somebody's, or opt for popular emacs configuration project:
+- Spacemacs
+- Doom-emacs
+- etc...
+* Doom-emacs
+Here we will explain the installation of doom-emacs.
+Similarly to most configurations, the doom-emacs config will "live" or will be placed in a =.emacs.d= directory.
+If you an existing .emacs.d config, just bak up those files.
+* Clone doom-emacs
+Ok so we will clone the doom-emacs git repo into an empty .emacs.d directory in your home directory.
+Once that is done, just cd in that directory and switch to develop branch:
+#+BEGIN_SRC sh
+git checkout develop
+#+END_SRC
+* Quickstart doom
+#+BEGIN_SRC sh
+cd ~/.emacs.d/bin/doom quickstart
+#+END_SRC
+It will set up all required files with default values as well as some packages.
+We can start emacs.
+Doom-emacs as a configuration is constantly being updated and fixed, so if you have any personal change you would like to be applied to the cloned doom-emacs you should put those inside a dedicated directory (often referred as DOOMDIR) usually located in .doom.d/ that was already created during quickstart, and typically it contains 2 important files:
+- config.el: usually it comes empty
+- init.el: that's where you uncomment all the packages that you want installed.
+THere is one additional file that you might want to put within your DOOMDIR: packages.el
+It contains all the packages that you wish to install on top of the builtin packages you have picked already.
+** Done with your DOOMDIR? bin/doom install!
+Simply go back to .emacs.d and launch the bin/doom command.
+** Keep your DOOMDIR under version control
+1) Create a github repo
+   1) Push your DOOMDIR
+** Any future modifications of  your DOOMDIR?
+ - make sure you 'bin/doom refresh' them
+ - push them to github
+** Keep up with Doom-emacs
+- bin/doom upgrade will upgrade your doom
+- bin/doom update will update the packages.
+** Troubleshoot
+- bin/doom doctor
+- discord
+* Projectile
+* Dired and Treemacs
+| Space-o p           | Toggles Treemacs showing the files and folders within the current project |
+
+** Dired :test:
+| Explanation                                            | command     |
+|--------------------------------------------------------+-------------|
+| Opens dired                                            | S+o+-       |
+| opens and shows all items within the current directory | Dble space  |
+| dives inside directory / opens file                    | enter       |
+|--------------------------------------------------------+-------------|
+| moves up to parent directory                           | -           |
+|--------------------------------------------------------+-------------|
+| creates directory                                      | +           |
+| creates file                                           | Space + .   |
+| marks file/folder for deletion                         | d           |
+| execute the deletion                                   | x           |
+| sort by name and dates                                 | o (order)   |
+| chmod commands 3:00                                    | ex: u-w,g+w |
+| change owner                                           | O           |
+| select all directories                                 | */          |
+| switch/toggle from directories to files and back       | t           |
+| mark item                                              | m           |
+| unmark                                                 | u           |
+| rename buffer with insert mode                         |             |
+| Move file/dir from one buffer/directory to another     | R           |
+| Once/if you have 2 dired buffer                        |             |
+|                                                        |             |
+
+| goal                                | key bindings |
+|-------------------------------------+--------------|
+| switch from one window to the other | Sp w w       |
+|                                     |              |
+* Buffers, windows and basic navigation
+** Buffers
+  | description                                  | key bindings    |
+  |----------------------------------------------+-----------------|
+  | show all items within current workspace      | Sp Sp           |
+  | show all open buffers within the workspace   | Sp b b  or Sp . |
+  | show all open buffers across workspaces      | Sp b B          |
+  | show all invisible buffers across workspaces | Sp b B Sp       |
+  | kill a buffer that you do not need           | Sp b k          |
+  | create new buffer                            | Sp b N          |
+** Windows as sections of your screen
+| description                     | key bindings      |
+|---------------------------------+-------------------|
+| Create a vertical split         | Sp w v (vertical) |
+| Create a horizontal split       | Sp w s            |
+| Jump from one window to another | Sp w w            |
+| Cycle through windows           | Sp ww             |
+| Navigate through windows        | Sp w h/j/k/l      |
+| Close window with               | Sp w d            |
+| wv                              |                   |
+** Frame: your emacs onscreen real-estate.
+* Installing packages in doom-emacs
+
+I think [[https://www.youtube.com/watch?v=WSF4EgQqa3Q&list=PLhXZp00uXBk4np17N39WvB80zgxlZfVwj&index=15][this]] video @4:30 is a very good summary of package installation in doom-emacs! 
+
+| description                            | key bindings |
+|----------------------------------------+--------------|
+| Access your packages.el within DOOMDIR | Sp f p etc   |
+|                                        |              |
+|                                        |              |
+|                                        |              |
+ Within your packages.el you simply declare the package you wish to be downloaded and installed form the internet.
+ Similar to many package management, except here there is no need to provide packages' version number.
+  1) Edit your packages.el within your DOOMDIR
+     #+BEGIN_SRC emacs-lisp
+(package! org-super-agenda)
+     #+END_SRC
+  2) Go to ~/.emacs.d and bin/doom refresh
+  3) Go to config.el and do the following
+     #+BEGIN_SRC emacs-lisp
+(def-package! org-super-agenda
+
+
+  )  ;;macro used for package configuration in doom, it is a thin wrapper around use-package
+     #+END_SRC
+    Note: if you want to know more about def-package! here is what you can do:
+   Sp-h-f(describe function)  and input _def-package!_.
+* Change key-bindings
+Check [[https://www.youtube.com/watch?v=FJq__bBi0nI&list=PLhXZp00uXBk4np17N39WvB80zgxlZfVwj&index=16][this video @5:20]]
+* navigating your buffer with AVY
+| description                                       | key bindings                              |
+|---------------------------------------------------+-------------------------------------------|
+| search for a (string of) character(s)             | g s Sp                                    |
+| want this behavior across windows?                | Sp h v                                    |
+| First let's access variable description           | Sp h v                                    |
+| ...then check avy-all-windows, and toggle it to t |                                           |
+| go-to word and delete it                          | g s Sp, then x-suggestedLettersCombo      |
+| go-to and correct spelling with ispell            | g s Sp, UrTarget, i+suggestedLettersCombo |
+| teleport                                          | g s Sp, UrTarget, t+selection             |
+1) Place une chaise au niveau de la cuisine, Thales en aura besoin
+   Prepare la
+2) Prendre feuille bleue, la mettre sur le sol ( en lestant les coins )
+3) Prendre le carton et placer chaque objet a' la place qui lui revient sur la feuille bleue.
+4) INSPECTION (demander a' Papa de verifier le boulot)
+5) Ouvre B, sors une recharge de colle, place la dans le pistolet C
+6) prendre C, connecte son chargeur E, prepare un feuille A4
+7) connecte le pistolet, connecte le tout au reseau electrique au niveau de la machine a' cafe,
+8) place ta feuille A4 sous le pistolet pour proteger le plan de travail de la colle liquide qui va couler du pistolet une fois que celui ci sera pret a' ete utilise/
+9) INSPECTION
+10) prendre l'objet H et utilise le pour couper la bobine A afin d'obtenir des fils de longueur K
+    Combien de bouts de fils? Compte le nombre de billes dans D et coupe un fil pour chaque bille
+11) Marque le milieu de chaque fil a' l'aide du crayon L
+12) INSPECTION+ BRIEFING
+
+* Evil-multiedit
+Powerful plugin/package by the author of spacemacs.
+[[https://www.youtube.com/watch?v=zXdT5jY_ui0&list=PLhXZp00uXBk4np17N39WvB80zgxlZfVwj&index=8][Check this out]]
+* Org-mode :test:
+Personal knowledge Manager and outline tool.
+A typical org-mode document that consists of:
+- metadata
+- titles and content
+- tables etc
+Org-mode documents are in fact simple non-prioritary text formatted.
+Let's start
+
+| description       | key bindings |
+|-------------------+--------------|
+| promote or demote | M-h and M-l  |
+- unnumbered list
+1) numbered list
+** Links within org-mode
+:PROPERTIES:
+:ID:       b59f3691-27a2-44c2-82ff-bbfc1ef64cae
+:END:
+
+| description     | key-bindings                     |
+|-----------------+----------------------------------|
+| inner-doc links | =+ [[HeadlineName]]=             |
+| create new link | Sp n l                           |
+| cross-doc link  | Sp m l l then locate stored link |
+| refiling links  |                                  |
+
+- weblinks
+[[https://www.youtube.com/watch?v=BRqjaN4-gGQ&list=PLhXZp00uXBk4np17N39WvB80zgxlZfVwj&index=10][This]]  is a great video about linking in doom-emacs.
+Here is how you link:
+First you copy the url you want to refer to, then you
+Sp m l l, and evil-paste-after to paste (simple P will not paste, at least it did not in my emacs config).
+- links to other parts of the document
+This is how we would create a link to the next section called "Snippets":
+== + [[Snippets]] ==
+As long as you hit Enter you are take there
+-Link to another part of the document: + ContentOfTheLink Sp m l target
++ [[Snippets for source code]]
+
++ Link to another document: visual select then Sp m l l file: +filepath :: HeadlineName or line#
+  You can actually link to a word within the document, all you need is to access the variable org-link-search-must-match-exact-headline (using Sp h v)and set the default value from 'query-to-create to nil. From that point on you can simply refer to the target using the aforementioned Sp m l l, pick the file location and add ::yourWord. Voila!
+ abc
++ links to elisp evaluation
+  In other words we can have link that will trigger evalutation when clicked
+  Here is [[elisp:(* 333 1234)][333*1234]]
+abc
+  All right so now we can execute code upon click, that means we can execute functions with a click, correct?
+  Let's make so that the user can simply click in order to call the org-agenda function:
+  You want to run the org-agenda? click [[elisp:org-agenda][here]]
+  List files in my directory[[shell: ls -la][here]]
++ links to words
++ bookmarks
++ refiling links to headlines within your document
+
+
+/home/laurent/.doom.d/config.el
+
+** Snippets
+*** Snippets for source code
+- "<s"
+#+BEGIN_SRC python :results output b
+for item in range(22):
+    print(item)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+#+end_example
+
+If you want to work on that code from within a dedicated buffer simple type ' (that is Sp m ').
+
+***
+**** HOLD
+
+** Tasks statuses: works on headlines!
+| description                                | key-bindings                                      |
+|--------------------------------------------+---------------------------------------------------|
+| access todo menu                           | Sp m t                                            |
+| cycle through todo statuses                | S + <-- -->                                       |
+| add your file to the sniffer               | org-agenda-file-to-front                          |
+| see all todo items gathered by sniffer     | Sp o a t                                          |
+| filter items by their status               | N r (0r for all tasks, 1r for TODOs)              |
+|--------------------------------------------+---------------------------------------------------|
+| YOU CAN FOCUS YOUR WORK ON SPECIFIC FOLDER | Access the org-agenda-files var and set its value |
+
+** Priority cookies  S-up (for headlines again)
+| description                | key-bindings |
+|----------------------------+--------------|
+| ajjust priority level with | S-up         |
+|                            |              |
+
+** DONE task a
+** Tags with =SPC m q= and org-sparse-tree
+| description                            | key-bindings |
+|----------------------------------------+--------------|
+| set headline tag                       | SPC m q      |
+| view tagged items                      | SPC o a m    |
+| view tagged portion of org-sparse-tree | C-c / m      |
+Here I will only talk about local/headlin tags. We will see global tags later.
+The table above shows how to set tags and view tagged items. Note that once you have tagged a title, this tag will be bound to this headline as well as with its children.
+*** headline with one tag :test:
+*** headline with 2 tags :test:testtag:
+** Checkboxes
+Todos are good, and used for headlines. When you want to be more granular and use checkboxes that's possible as well.
+
+*** Lists types: learn to propagate changes
+Imagine you have built a list of tasks. You want to go from ul to ol?
+Simply modify the first element and let C-c C-c propagate the change.
++ a
++ b
++ c
++ d
+
+
+*** Checkbox your list [ ] (C-c C-c won't work)
+1) [-] a
+   1) [X]
+   2) [ ]
+2) [ ] b
+3) [ ] c
+4) [ ] d
+5) [ ]
+   - [ ]
+   - [ ]
+   - [ ]
+*** Marker/cookie to follow completion stage (/ or %)
+ - [0%]
+   - [ ]
+   - [ ]
+   - [ ]
+   - [ ]
+   - [ ]
+*** How to reuse a virgin version of the checkbox-aided routine?
+** Magit g git magit
+*** magithub
+magithub-clone
+| description                     | key-bindings |
+|---------------------------------+--------------|
+| jump to the magit status buffer | C-x g        |
+| refresh git status              | g r          |
+| switch to open buffer           | C b b        |
+| Diffing                         | D            |
+| Logging                         | L            |
+| Blaming                         |              |
+| Staging                         | s/u/S/U      |
+| ``                              |              |
+* Demoing Stuff in emacs
+** use command-log
+
+
+* Jokes
+- digression machine:
+  "c'est a' tomber parterre!
+  - ca veut dire quoi
+  - ca veut dire ...
+    - ca veut dire que blablabla. Putain arrete tes digressions a' la con
+    - ok tu as raison
+  - mmm c'est delicieux, une vraie tuerie"
+
+- forewords: these sketches might seem violent and unbearable for some readers, however note that they are a soft version of reality
+  - " ni shi e? ni yao mian1bao1?
+    - putain get your tones straight, you are going to mess up his chinese!
+    - Ok tu as raison.
+    -xiexie "
+    - xiexie ma1ma3!
+    - fuck"
+ -I am not from your hometown, I am not a whore.
+    " You don't know me, you never saw me mad, beware because I am going to go mad! I am from the hood!"
+    " You are from the hood, you are from wudaokou you are so tough"
+    " Well I am from wudaokou, I am not from your hometown! I am not a whore!"
+  -
+*
+* Lisp Online class
+| terms   | definition |
+|---------+------------|
+| process |            |
+Computer Science is not a science, just as geo-metrie is not about using tools to mesure areas.
+Let's follow along Hal Abelson and Gerald Jay Sussman and imagine that computer science is akin to magic.
+Right now we are in the early days of computer sciences and we might not realize that the heart of our work is an attempt at formalizing our intuition about the way things work. We are trying to develop a precise language that explain processes ( how to do things )
+Declarative knowledge:
+#+BEGIN_QUOTE
+sqrt(x) is the y such that:
+Y** = x  and y>= 0
+#+END_QUOTE
+Imperative knowledge/method/process: finding the sqrt by successive averaging
+#+BEGIN_QUOTE
+make a guess G
+improve the guess by averaging G and x/G
+keep improving the guess until it is good enough
+#+END_QUOTE
+135764
+** what are processes? what is their relationships with procedures?
+They are like magical spirits that live in the computer and do some things.
+Processes are controlled by patterns of rules called procedures.
+We want to use that magic, and as all sorcerers use mysterious languages ( summerian, babylonian etc )...we are going to control our spirits using a language called LISP as this language was designed to cast the spells (writing procedures) in order direct the processes.
+Learning the rules of LISP is easy, just like with chess rules can be learnt in a matter of minutes.
+Just like chess it is not easy to understand the consequences of the rules, and apply them properly.
+Unlike chess it is frequent in computer sciences that the problems that we are trying to solve are so large that the programs can spread across thousands of page and are soon too complex to be managed by one single person...and that in fact puts some new stress on the your program...and so the corner-stone of computer science become the development of techniques to control the complexity of large systems.
+Is that anything new? Various industries rely on complex systems, but they also have to deal with real components while CS is dealing with idealized components, and so when building a program there is not much difference between what you can imagine and what you can build (hence the analogy with magic).
+In conclusion CS is an abstract form of engineering as you can ignore the constraints imposed by reality.
+What are the techniques used in CS? some are specific to CS, some are used in other industries:
+- black-box abstraction to suppress detailed implementation so as to be able to move on to bigger boxes
+- conventional interfaces
+  So that we can (* 2 (+ a b)) can be used with integers, vectors, wavelength etc. or any objects a, b that some coders might want to plug to our existing black box extractions.
+  - generic operations
+  - large-scale structures
+  - OOP
+  - operation of aggregates
+  -
+- making new design language.
+  We will express in LISP the process of interpreting LISP itself.
+- metalinguistic abstraction
+  - interpretation apply-eval
+  - ex of using the apply-eval loop to create a new language: logic programming
+  - implementation on hardware
+** ok let's start with lisp
+questions to ask:
+- primitive elements
+- means of combination (using primitive elements to create new objects)
+- means of abstraction ( using what we create as abstract elements )
+*** Primitive data and procedures in Lisp
+*** Means of combinations
+In lisp 3 is a primitive data (or its representation of Plato's 3),2.5 is a primitive data, 0.5 as well.
+"+" is also a primitive object in lisp.
+What is the sum of 3, 2.5 and 0.5? Well let's just apply the sum operator to those 3 numbers,Gkj
+(+ 3 2.5 0.5) is called a combination. Combo usually apply an operator to operands and are between parenthesis.
+Note that operands themselves can be combinations:
+(+ (+ 2 3) 5)
+
+**** Prefix notation
+#+CAPTION: This is the caption for the next figure link (or table)
+#+NAME:   fig:SED-HR4049
+[[~/Documents/tree.png]]
+*** Means of abstraction with DEFINE
+We can define new vocabulary
+#+BEGIN_SRC common-lisp
+(DEFINE A (* 5 5))
+#+END_SRC
+We can also define more general function
+#+BEGIN_SRC common-lisp
+(DEFINE (SQUARE X) (* X X))
+
+#+END_SRC
+The definition above is ok, but that's syntactic sugar (that's a more convenient way) for the real code below.
+Using lambda within the definition makes it clearer that we are indeed naming something that is a procedure, and it is also more faithful to the way things happen.
+#+BEGIN_SRC common-lisp
+(DEFINE SQUARE (LAMBDA (X) (* X X)))
+;;; Define square TO BE :
+;;; make a procedure
+;;; with an argument X
+;;; that returns the result of multiplying X by X
+#+END_SRC
+#+CAPTION: This is the caption for the next figure link (or table)
+#+NAME:   fig:02
+[[~/Documents/COND.png]]
+#+BEGIN_SRC common-lisp
+(DEFINE (ABS X)
+  (COND ((< X 0) (-X))
+        ((= X 0) (0))
+        ((> X 0) (X)) ))
+
+
+#+END_SRC
+Another way to write that case analysis:
+#+BEGIN_SRC common-lisp
+(DEFINE (ABS X)
+  (IF (< X 0)
+     (-X)
+  X))
+
+#+END_SRC
+*** Recap of lesson 1
+Note that we have now all we need to write any program.
+#+CAPTION: What we have learnt until now
+#+NAME:   fig:04
+[[~/Documents/Lecture01table.png]]
+---------------------------------------------------------------------------------------
+*** Evaluating combos with the rule of substitution
+How do combinations get evaluated? Let's look at the rule of substitution:
+#+BEGIN_QUOTE
+To evaluate an application:
+-Evaluate the operator in order to get the procedure
+-Evaluate the operands to get arguments
+-Apply the procedure to the arguments:
+    -copy the body of the procedure, substituting the arguments so that they take the place of the formal arguments in the procedure
+    -evaluate the resulting new body
+
+#+END_QUOTE
+So right now and for the next lessons let's religiously believe that the computer works as follow:
+#+CAPTION: That's how the computer reduces your combinations
+#+NAME:   fig:05
+[[~/Documents/religiously.png]]
+
+So the reduction above is good enough for now, let's move on.
+*** Evaluating conditional expression
+
+Explaining IF and conditionals in general.
+#+BEGIN_SRC common-lisp
+(IF <predicate> ;;; the thing that evaluates to true or false
+    <consequent>
+    <alternative)
+#+END_SRC
+
+**** Should you really remember the terms Predicate, Consequent, Alternative?
+:PROPERTIES:
+:NOTER_DOCUMENT: /home/laurent/Downloads/sicp.pdf
+:END:
+Yes. Just like in sorcery: when you know the name of a spirit you have power over it!
+So PCA!
+
+#+CAPTION: Rule to evaluate and IF expression
+#+NAME:   fig:05
+[[~/Documents/IFexpression.png]]
+
+***** Skeleton of sicp.pdf
+
+****** Link on page 2: [[http://mitpress.mit.edu/sicp/][mitpress.mit.edu]]
+:PROPERTIES:
+:NOTER_PAGE: (2 . 0.569104)
+:END:
+
+****** Link on page 2: [[http://creativecommons.org/licenses/by-sa/4.0/][  .]]
+:PROPERTIES:
+:NOTER_PAGE: (2 . 0.569104)
+:END:
+
+****** Link on page 2: [[http://sicpebook.wordpress.com][2.andresraba5.6]]
+:PROPERTIES:
+:NOTER_PAGE: (2 . 0.793894)
+:END:
+
+****** Link on page 2: [[http://www.neilvandyke.org/sicp-texi/][2.neilvandyke4]]
+:PROPERTIES:
+:NOTER_PAGE: (2 . 0.816373)
+:END:
+
+****** Unofficial Texinfo Format
+:PROPERTIES:
+:NOTER_PAGE: (9 . 0.106602)
+:END:
+
+******* Link on page 10: [[http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-001-structure-and-interpretation-of-computer-programs-spring-2005/video-lectures/][ ]]
+:PROPERTIES:
+:NOTER_PAGE: (10 . 0.724023)
+:END:
+
+******* Link on page 10: [[http://groups.csail.mit.edu/mac/classes/6.001/abelson-sussman-lectures/][ ]]
+:PROPERTIES:
+:NOTER_PAGE: (10 . 0.724023)
+:END:
+
+****** Dedication
+:PROPERTIES:
+:NOTER_PAGE: (12 . 0.106602)
+:END:
+
+****** Foreword
+:PROPERTIES:
+:NOTER_PAGE: (13 . 0.106602)
+:END:
+
+****** Preface to the Second Edition
+:PROPERTIES:
+:NOTER_PAGE: (19 . 0.106602)
+:END:
+
+******* Link on page 20: [[http://mitpress.mit.edu/sicp][hp://mitpress.mit.edu/sicp]]
+:PROPERTIES:
+:NOTER_PAGE: (20 . 0.592816)
+:END:
+
+****** Preface to the First Edition
+:PROPERTIES:
+:NOTER_PAGE: (21 . 0.106602)
+:END:
+
+****** Acknowledgments
+:PROPERTIES:
+:NOTER_PAGE: (25 . 0.106602)
+:END:
+
+****** Building Abstractions with Procedures
+:PROPERTIES:
+:NOTER_PAGE: (29 . 0.106602)
+:END:
+
+******* The Elements of Programming
+:PROPERTIES:
+:NOTER_PAGE: (34 . 0.106602)
+:END:
+
+******** Expressions
+:PROPERTIES:
+:NOTER_PAGE: (35 . 0.181276)
+:END:
+
+******** Naming and the Environment
+:PROPERTIES:
+:NOTER_PAGE: (38 . 0.308651)
+:END:
+
+******** Evaluating Combinations
+:PROPERTIES:
+:NOTER_PAGE: (40 . 0.155185)
+:END:
+
+******** Compound Procedures
+:PROPERTIES:
+:NOTER_PAGE: (43 . 0.257382)
+:END:
+
+******** The Substitution Model for Procedure Application
+:PROPERTIES:
+:NOTER_PAGE: (46 . 0.232061)
+:END:
+
+******** Conditional Expressions and Predicates
+:PROPERTIES:
+:NOTER_PAGE: (50 . 0.257275)
+:END:
+
+******** Example: Square Roots by Newton's Method
+:PROPERTIES:
+:NOTER_PAGE: (56 . 0.257705)
+:END:
+
+******** Procedures as Black-Box Abstractions
+:PROPERTIES:
+:NOTER_PAGE: (61 . 0.716688)
+:END:
+
+******* Procedures and the Processes They Generate
+:PROPERTIES:
+:NOTER_PAGE: (68 . 0.106602)
+:END:
+
+******** Linear Recursion and Iteration
+:PROPERTIES:
+:NOTER_PAGE: (69 . 0.385151)
+:END:
+
+******** Tree Recursion
+:PROPERTIES:
+:NOTER_PAGE: (75 . 0.692191)
+:END:
+
+******** Orders of Growth
+:PROPERTIES:
+:NOTER_PAGE: (82 . 0.51754)
+:END:
+
+******** Exponentiation
+:PROPERTIES:
+:NOTER_PAGE: (85 . 0.434826)
+:END:
+
+******** Greatest Common Divisors
+:PROPERTIES:
+:NOTER_PAGE: (90 . 0.483373)
+:END:
+
+******** Example: Testing for Primality
+:PROPERTIES:
+:NOTER_PAGE: (93 . 0.436026)
+:END:
+
+******* Formulating Abstractions with Higher-Order Procedures
+:PROPERTIES:
+:NOTER_PAGE: (102 . 0.694107)
+:END:
+
+******** Procedures as Arguments
+:PROPERTIES:
+:NOTER_PAGE: (104 . 0.106602)
+:END:
+
+******** Constructing Procedures Using lambda
+:PROPERTIES:
+:NOTER_PAGE: (111 . 0.106602)
+:END:
+
+******** Procedures as General Methods
+:PROPERTIES:
+:NOTER_PAGE: (117 . 0.106602)
+:END:
+
+******** Procedures as Returned Values
+:PROPERTIES:
+:NOTER_PAGE: (125 . 0.106602)
+:END:
+
+****** Building Abstractions with Data
+:PROPERTIES:
+:NOTER_PAGE: (135 . 0.106602)
+:END:
+
+******* Introduction to Data Abstraction
+:PROPERTIES:
+:NOTER_PAGE: (140 . 0.539942)
+:END:
+
+******** Example: Arithmetic Operations for Rational Numbers
+:PROPERTIES:
+:NOTER_PAGE: (141 . 0.436116)
+:END:
+
+******** Abstraction Barriers
+:PROPERTIES:
+:NOTER_PAGE: (146 . 0.608313)
+:END:
+
+******** What Is Meant by Data?
+:PROPERTIES:
+:NOTER_PAGE: (150 . 0.414269)
+:END:
+
+******** Extended Exercise: Interval Arithmetic
+:PROPERTIES:
+:NOTER_PAGE: (154 . 0.537704)
+:END:
+
+******* Hierarchical Data and the Closure Property
+:PROPERTIES:
+:NOTER_PAGE: (160 . 0.479845)
+:END:
+
+******** Representing Sequences
+:PROPERTIES:
+:NOTER_PAGE: (162 . 0.359687)
+:END:
+
+******** Hierarchical Structures
+:PROPERTIES:
+:NOTER_PAGE: (174 . 0.823308)
+:END:
+
+******** Sequences as Conventional Interfaces
+:PROPERTIES:
+:NOTER_PAGE: (182 . 0.444622)
+:END:
+
+******** Example: A Picture Language
+:PROPERTIES:
+:NOTER_PAGE: (200 . 0.497609)
+:END:
+
+******* Symbolic Data
+:PROPERTIES:
+:NOTER_PAGE: (220 . 0.473721)
+:END:
+
+******** Quotation
+:PROPERTIES:
+:NOTER_PAGE: (220 . 0.651899)
+:END:
+
+******** Example: Symbolic Differentiation
+:PROPERTIES:
+:NOTER_PAGE: (225 . 0.200007)
+:END:
+
+******** Example: Representing Sets
+:PROPERTIES:
+:NOTER_PAGE: (232 . 0.817256)
+:END:
+
+******** Example: Huffman Encoding Trees
+:PROPERTIES:
+:NOTER_PAGE: (246 . 0.30455)
+:END:
+
+******* Multiple Representations for Abstract Data
+:PROPERTIES:
+:NOTER_PAGE: (257 . 0.386996)
+:END:
+
+******** Representations for Complex Numbers
+:PROPERTIES:
+:NOTER_PAGE: (259 . 0.818258)
+:END:
+
+******** Tagged data
+:PROPERTIES:
+:NOTER_PAGE: (265 . 0.106602)
+:END:
+
+******** Data-Directed Programming and Additivity
+:PROPERTIES:
+:NOTER_PAGE: (270 . 0.380746)
+:END:
+
+******* Systems with Generic Operations
+:PROPERTIES:
+:NOTER_PAGE: (282 . 0.106602)
+:END:
+
+******** Generic Arithmetic Operations
+:PROPERTIES:
+:NOTER_PAGE: (282 . 0.814444)
+:END:
+
+******** Combining Data of Different Types
+:PROPERTIES:
+:NOTER_PAGE: (290 . 0.106602)
+:END:
+
+******** Example: Symbolic Algebra
+:PROPERTIES:
+:NOTER_PAGE: (301 . 0.73336)
+:END:
+
+****** Modularity, Objects, and State
+:PROPERTIES:
+:NOTER_PAGE: (322 . 0.106602)
+:END:
+
+******* Assignment and Local State
+:PROPERTIES:
+:NOTER_PAGE: (324 . 0.285175)
+:END:
+
+******** Local State Variables
+:PROPERTIES:
+:NOTER_PAGE: (325 . 0.385151)
+:END:
+
+******** The Benefits of Introducing Assignment
+:PROPERTIES:
+:NOTER_PAGE: (333 . 0.46235)
+:END:
+
+******** The Costs of Introducing Assignment
+:PROPERTIES:
+:NOTER_PAGE: (339 . 0.518454)
+:END:
+
+******* The Environment Model of Evaluation
+:PROPERTIES:
+:NOTER_PAGE: (348 . 0.576205)
+:END:
+
+******** The Rules for Evaluation
+:PROPERTIES:
+:NOTER_PAGE: (350 . 0.739359)
+:END:
+
+******** Applying Simple Procedures
+:PROPERTIES:
+:NOTER_PAGE: (355 . 0.232294)
+:END:
+
+******** Frames as the Repository of Local State
+:PROPERTIES:
+:NOTER_PAGE: (358 . 0.475404)
+:END:
+
+******** Internal Definitions
+:PROPERTIES:
+:NOTER_PAGE: (365 . 0.106602)
+:END:
+
+******* Modeling with Mutable Data
+:PROPERTIES:
+:NOTER_PAGE: (369 . 0.106602)
+:END:
+
+******** Mutable List Structure
+:PROPERTIES:
+:NOTER_PAGE: (370 . 0.106602)
+:END:
+
+******** Representing Queues
+:PROPERTIES:
+:NOTER_PAGE: (381 . 0.530541)
+:END:
+
+******** Representing Tables
+:PROPERTIES:
+:NOTER_PAGE: (388 . 0.666888)
+:END:
+
+******** A Simulator for Digital Circuits
+:PROPERTIES:
+:NOTER_PAGE: (397 . 0.513565)
+:END:
+
+******** Propagation of Constraints
+:PROPERTIES:
+:NOTER_PAGE: (414 . 0.231614)
+:END:
+
+******* Concurrency: Time Is of the Essence
+:PROPERTIES:
+:NOTER_PAGE: (429 . 0.106602)
+:END:
+
+******** The Nature of Time in Concurrent Systems
+:PROPERTIES:
+:NOTER_PAGE: (431 . 0.359687)
+:END:
+
+******** Mechanisms for Controlling Concurrency
+:PROPERTIES:
+:NOTER_PAGE: (438 . 0.289741)
+:END:
+
+******* Streams
+:PROPERTIES:
+:NOTER_PAGE: (456 . 0.539853)
+:END:
+
+******** Streams Are Delayed Lists
+:PROPERTIES:
+:NOTER_PAGE: (458 . 0.38508)
+:END:
+
+******** Infinite Streams
+:PROPERTIES:
+:NOTER_PAGE: (469 . 0.710384)
+:END:
+
+******** Exploiting the Stream Paradigm
+:PROPERTIES:
+:NOTER_PAGE: (481 . 0.257776)
+:END:
+
+******** Streams and Delayed Evaluation
+:PROPERTIES:
+:NOTER_PAGE: (498 . 0.308615)
+:END:
+
+******** Modularity of Functional Programs and Modularity of Objects
+:PROPERTIES:
+:NOTER_PAGE: (506 . 0.63546)
+:END:
+
+****** Metalinguistic Abstraction
+:PROPERTIES:
+:NOTER_PAGE: (515 . 0.106602)
+:END:
+
+******* The Metacircular Evaluator
+:PROPERTIES:
+:NOTER_PAGE: (520 . 0.259621)
+:END:
+
+******** The Core of the Evaluator
+:PROPERTIES:
+:NOTER_PAGE: (522 . 0.799957)
+:END:
+
+******** Representing Expressions
+:PROPERTIES:
+:NOTER_PAGE: (529 . 0.39278)
+:END:
+
+******** Evaluator Data Structures
+:PROPERTIES:
+:NOTER_PAGE: (540 . 0.106602)
+:END:
+
+******** Running the Evaluator as a Program
+:PROPERTIES:
+:NOTER_PAGE: (545 . 0.704027)
+:END:
+
+******** Data as Programs
+:PROPERTIES:
+:NOTER_PAGE: (550 . 0.308723)
+:END:
+
+******** Internal Definitions
+:PROPERTIES:
+:NOTER_PAGE: (554 . 0.506599)
+:END:
+
+******** Separating Syntactic Analysis from Execution
+:PROPERTIES:
+:NOTER_PAGE: (562 . 0.646079)
+:END:
+
+******* Variations on a Scheme — Lazy Evaluation
+:PROPERTIES:
+:NOTER_PAGE: (569 . 0.259621)
+:END:
+
+******** Normal Order and Applicative Order
+:PROPERTIES:
+:NOTER_PAGE: (570 . 0.106602)
+:END:
+
+******** An Interpreter with Lazy Evaluation
+:PROPERTIES:
+:NOTER_PAGE: (572 . 0.620866)
+:END:
+
+******** Streams as Lazy Lists
+:PROPERTIES:
+:NOTER_PAGE: (583 . 0.512544)
+:END:
+
+******* Variations on a Scheme — Nondeterministic Computing
+:PROPERTIES:
+:NOTER_PAGE: (587 . 0.106602)
+:END:
+
+******** Amb and Search
+:PROPERTIES:
+:NOTER_PAGE: (589 . 0.62074)
+:END:
+
+******** Examples of Nondeterministic Programs
+:PROPERTIES:
+:NOTER_PAGE: (595 . 0.657862)
+:END:
+
+******** Implementing the amb Evaluator
+:PROPERTIES:
+:NOTER_PAGE: (606 . 0.457515)
+:END:
+
+******* Logic Programming
+:PROPERTIES:
+:NOTER_PAGE: (622 . 0.682252)
+:END:
+
+******** Deductive Information Retrieval
+:PROPERTIES:
+:NOTER_PAGE: (627 . 0.563419)
+:END:
+
+******** How the Query System Works
+:PROPERTIES:
+:NOTER_PAGE: (643 . 0.490733)
+:END:
+
+******** Is Logic Programming Mathematical Logic?
+:PROPERTIES:
+:NOTER_PAGE: (655 . 0.470104)
+:END:
+
+******** Implementing the Query System
+:PROPERTIES:
+:NOTER_PAGE: (663 . 0.706767)
+:END:
+
+********* The Driver Loop and Instantiation
+:PROPERTIES:
+:NOTER_PAGE: (663 . 0.821911)
+:END:
+
+********* The Evaluator
+:PROPERTIES:
+:NOTER_PAGE: (666 . 0.237004)
+:END:
+
+********* Finding Assertions by Pattern Matching
+:PROPERTIES:
+:NOTER_PAGE: (670 . 0.391311)
+:END:
+
+********* Rules and Unification
+:PROPERTIES:
+:NOTER_PAGE: (673 . 0.702398)
+:END:
+
+********* Maintaining the Data Base
+:PROPERTIES:
+:NOTER_PAGE: (679 . 0.106602)
+:END:
+
+********* Stream Operations
+:PROPERTIES:
+:NOTER_PAGE: (682 . 0.776642)
+:END:
+
+********* Query Syntax Procedures
+:PROPERTIES:
+:NOTER_PAGE: (684 . 0.353419)
+:END:
+
+********* Frames and Bindings
+:PROPERTIES:
+:NOTER_PAGE: (687 . 0.536253)
+:END:
+
+****** Computing with Register Machines
+:PROPERTIES:
+:NOTER_PAGE: (694 . 0.106602)
+:END:
+
+******* Designing Register Machines
+:PROPERTIES:
+:NOTER_PAGE: (696 . 0.590889)
+:END:
+
+******** A Language for Describing Register Machines
+:PROPERTIES:
+:NOTER_PAGE: (700 . 0.587415)
+:END:
+
+******** Abstraction in Machine Design
+:PROPERTIES:
+:NOTER_PAGE: (706 . 0.378006)
+:END:
+
+******** Subroutines
+:PROPERTIES:
+:NOTER_PAGE: (709 . 0.529771)
+:END:
+
+******** Using a Stack to Implement Recursion
+:PROPERTIES:
+:NOTER_PAGE: (714 . 0.748259)
+:END:
+
+******** Instruction Summary
+:PROPERTIES:
+:NOTER_PAGE: (723 . 0.106602)
+:END:
+
+******* A Register-Machine Simulator
+:PROPERTIES:
+:NOTER_PAGE: (724 . 0.106602)
+:END:
+
+******** The Machine Model
+:PROPERTIES:
+:NOTER_PAGE: (726 . 0.273284)
+:END:
+
+******** The Assembler
+:PROPERTIES:
+:NOTER_PAGE: (732 . 0.106602)
+:END:
+
+******** Generating Execution Procedures for Instructions
+:PROPERTIES:
+:NOTER_PAGE: (736 . 0.692173)
+:END:
+
+******** Monitoring Machine Performance
+:PROPERTIES:
+:NOTER_PAGE: (746 . 0.671526)
+:END:
+
+******* Storage Allocation and Garbage Collection
+:PROPERTIES:
+:NOTER_PAGE: (751 . 0.106602)
+:END:
+
+******** Memory as Vectors
+:PROPERTIES:
+:NOTER_PAGE: (752 . 0.181258)
+:END:
+
+******** Maintaining the Illusion of Infinite Memory
+:PROPERTIES:
+:NOTER_PAGE: (759 . 0.720198)
+:END:
+
+******* The Explicit-Control Evaluator
+:PROPERTIES:
+:NOTER_PAGE: (769 . 0.106602)
+:END:
+
+******** The Core of the Explicit-Control Evaluator
+:PROPERTIES:
+:NOTER_PAGE: (771 . 0.563419)
+:END:
+
+******** Sequence Evaluation and Tail Recursion
+:PROPERTIES:
+:NOTER_PAGE: (779 . 0.759057)
+:END:
+
+******** Conditionals, Assignments, and Definitions
+:PROPERTIES:
+:NOTER_PAGE: (784 . 0.206543)
+:END:
+
+******** Running the Evaluator
+:PROPERTIES:
+:NOTER_PAGE: (787 . 0.278817)
+:END:
+
+******* Compilation
+:PROPERTIES:
+:NOTER_PAGE: (795 . 0.412478)
+:END:
+
+******** Structure of the Compiler
+:PROPERTIES:
+:NOTER_PAGE: (800 . 0.457139)
+:END:
+
+******** Compiling Expressions
+:PROPERTIES:
+:NOTER_PAGE: (807 . 0.36531)
+:END:
+
+******** Compiling Combinations
+:PROPERTIES:
+:NOTER_PAGE: (816 . 0.459592)
+:END:
+
+******** Combining Instruction Sequences
+:PROPERTIES:
+:NOTER_PAGE: (825 . 0.708164)
+:END:
+
+******** An Example of Compiled Code
+:PROPERTIES:
+:NOTER_PAGE: (830 . 0.359203)
+:END:
+
+******** Lexical Addressing
+:PROPERTIES:
+:NOTER_PAGE: (845 . 0.257705)
+:END:
+
+******** Interfacing Compiled Code to the Evaluator
+:PROPERTIES:
+:NOTER_PAGE: (850 . 0.836936)
+:END:
+
+****** References
+:PROPERTIES:
+:NOTER_PAGE: (862 . 0.106602)
+:END:
+
+******* Link on page 862: [[http://www.hpl.hp.com/techreports/94/HPL-94-30.html][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (862 . 0.414754)
+:END:
+
+******* Link on page 862: [[https://www.cs.princeton.edu/~appel/papers/45.ps][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (862 . 0.542136)
+:END:
+
+******* Link on page 862: [[http://worrydream.com/refs/Backus-CanProgrammingBeLiberated.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (862 . 0.593088)
+:END:
+
+******* Link on page 862: [[http://dspace.mit.edu/handle/1721.1/41976][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (862 . 0.64404)
+:END:
+
+******* Link on page 862: [[http://ijcai.org/Past%20Proceedings/IJCAI-77-VOL1/PDF/085.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (862 . 0.822373)
+:END:
+
+******* Link on page 863: [[https://www.cs.auckland.ac.nz/~chaitin/sciamer.html][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (863 . 0.185196)
+:END:
+
+******* Link on page 863: [[http://www.doc.ic.ac.uk/~klc/neg.html][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (863 . 0.2871)
+:END:
+
+******* Link on page 863: [[http://mumble.net/~jar/pubs/macros_that_work.ps][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (863 . 0.439958)
+:END:
+
+******* Link on page 863: [[http://alain.colmerauer.free.fr/alcol/ArchivesPublications/HommeMachineFr/HoMa.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (863 . 0.516387)
+:END:
+
+******* Link on page 863: [[http://www.cs.utexas.edu/users/EWD/ewd01xx/EWD196.PDF][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (863 . 0.694721)
+:END:
+
+******* Link on page 863: [[http://www.cs.utexas.edu/users/EWD/ewd01xx/EWD123.PDF][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (863 . 0.771149)
+:END:
+
+******* Link on page 864: [[http://dspace.mit.edu/handle/1721.1/5750][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (864 . 0.185196)
+:END:
+
+******* Link on page 864: [[http://dspace.mit.edu/handle/1721.1/5733][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (864 . 0.236148)
+:END:
+
+******* Link on page 864: [[https://saltworks.stanford.edu/assets/kv359wz9060.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (864 . 0.312576)
+:END:
+
+******* Link on page 864: [[http://www.iro.umontreal.ca/~feeley/papers/FeeleyMSc.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (864 . 0.363528)
+:END:
+
+******* Link on page 864: [[http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.90.6978][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (864 . 0.414482)
+:END:
+
+******* Link on page 864: [[https://www.cs.purdue.edu/homes/hosking/690M/p611-fenichel.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (864 . 0.541862)
+:END:
+
+******* Link on page 864: [[http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.332.36][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (864 . 0.592816)
+:END:
+
+******* Link on page 864: [[https://www.cs.indiana.edu/cgi-bin/techreports/TRNNN.cgi?trnum=TR44][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (864 . 0.745673)
+:END:
+
+******* Link on page 865: [[http://www.dreamsongs.com/Files/WhyOfY.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (865 . 0.108767)
+:END:
+
+******* Link on page 865: [[http://stephane.ducasse.free.fr/FreeBooks/BlueBook/Bluebook.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (865 . 0.159719)
+:END:
+
+******* Link on page 865: [[http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.81.9820][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (865 . 0.363528)
+:END:
+
+******* Link on page 865: [[http://www.kestrel.edu/home/people/green/publications/green-raphael.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (865 . 0.439958)
+:END:
+
+******* Link on page 865: [[http://www.unc.edu/~stotts/comp723/guttagADT77.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (865 . 0.541862)
+:END:
+
+******* Link on page 865: [[https://groups.csail.mit.edu/mac/ftpdir/users/cph/links.ps.gz][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (865 . 0.669244)
+:END:
+
+******* Link on page 865: [[http://groups.csail.mit.edu/mac/ftpdir/scheme-reports/synclo.ps][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (865 . 0.720196)
+:END:
+
+******* Link on page 865: [[https://archive.org/details/AnIntroductionToTheTheoryOfNumbers-4thEd-G.h.HardyE.m.Wright][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (865 . 0.822101)
+:END:
+
+******* Link on page 866: [[http://www.softwarepreservation.org/projects/LISP/stanford/Hearn-StandardLisp-AIM-90.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (866 . 0.185196)
+:END:
+
+******* Link on page 866: [[http://eprints.soton.ac.uk/257577/1/funcgeo2.pdf][ version –›]]
+:PROPERTIES:
+:NOTER_PAGE: (866 . 0.312576)
+:END:
+
+******* Link on page 866: [[http://pmh-systems.co.uk/phAcademic/papers/funcgeo.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (866 . 0.312576)
+:END:
+
+******* Link on page 866: [[http://dspace.mit.edu/handle/1721.1/6171][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (866 . 0.389005)
+:END:
+
+******* Link on page 866: [[http://dspace.mit.edu/handle/1721.1/6272][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (866 . 0.439958)
+:END:
+
+******* Link on page 866: [[http://www.cs.kent.ac.uk/people/staff/dat/miranda/whyfp90.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (866 . 0.669244)
+:END:
+
+******* Link on page 867: [[http://www.ccs.neu.edu/scheme/pubs/dissertation-kohlbecker.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (867 . 0.2871)
+:END:
+
+******* Link on page 867: [[http://www.doc.ic.ac.uk/~rak/papers/IFIP%2074.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (867 . 0.439958)
+:END:
+
+******* Link on page 867: [[http://www.doc.ic.ac.uk/%7Erak/papers/LogicForProblemSolving.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (867 . 0.49091)
+:END:
+
+******* Link on page 867: [[http://research.microsoft.com/en-us/um/people/lamport/pubs/time-clocks.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (867 . 0.541862)
+:END:
+
+******* Link on page 867: [[http://www.bitsavers.org/pdf/xerox/parc/techReports/CSL-81-12_Report_On_The_Programming_Language_Euclid.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (867 . 0.618291)
+:END:
+
+******* Link on page 867: [[http://dspace.mit.edu/handle/1721.1/6335][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (867 . 0.745673)
+:END:
+
+******* Link on page 867: [[http://csg.csail.mit.edu/CSGArchives/memos/Memo-117.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (867 . 0.822101)
+:END:
+
+******* Link on page 868: [[http://dspace.mit.edu/handle/1721.1/6296][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (868 . 0.134242)
+:END:
+
+******* Link on page 868: [[http://dspace.mit.edu/handle/1721.1/6327][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (868 . 0.185196)
+:END:
+
+******* Link on page 868: [[http://www-formal.stanford.edu/jmc/recursive.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (868 . 0.261625)
+:END:
+
+******* Link on page 868: [[http://www-formal.stanford.edu/jmc/basis.html][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (868 . 0.338053)
+:END:
+
+******* Link on page 868: [[http://www-formal.stanford.edu/jmc/history/lisp/lisp.html][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (868 . 0.389005)
+:END:
+
+******* Link on page 868: [[http://www.softwarepreservation.org/projects/LISP/book/LISP%201.5%20Programmers%20Manual.pdf/view][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (868 . 0.465433)
+:END:
+
+******* Link on page 868: [[http://dspace.mit.edu/handle/1721.1/6203][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (868 . 0.516387)
+:END:
+
+******* Link on page 868: [[http://www.cs.cmu.edu/~glmiller/Publications/b2hd-Mi76.html][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (868 . 0.567339)
+:END:
+
+******* Link on page 868: [[http://dspace.mit.edu/handle/1721.1/6622][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (868 . 0.643767)
+:END:
+
+******* Link on page 868: [[http://www.softwarepreservation.org/projects/LISP/MIT/Moon-MACLISP_Reference_Manual-Apr_08_1974.pdf/view][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (868 . 0.694721)
+:END:
+
+******* Link on page 868: [[http://www.unlambda.com/lmman/index.html][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (868 . 0.745673)
+:END:
+
+******* Link on page 869: [[http://maclisp.info/pitmanual][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (869 . 0.185196)
+:END:
+
+******* Link on page 869: [[http://www.catb.org/jargon/][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (869 . 0.2871)
+:END:
+
+******* Link on page 869: [[http://people.csail.mit.edu/riastradh/t/adams82t.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (869 . 0.439958)
+:END:
+
+******* Link on page 869: [[http://people.csail.mit.edu/jaffer/r4rs.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (869 . 0.49091)
+:END:
+
+******* Link on page 869: [[http://people.csail.mit.edu/rivest/Rsapaper.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (869 . 0.567339)
+:END:
+
+******* Link on page 869: [[http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.123.8503&rep=rep1&type=pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (869 . 0.720196)
+:END:
+
+******* Link on page 869: [[http://dspace.mit.edu/handle/1721.1/5753][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (869 . 0.796624)
+:END:
+
+******* Link on page 870: [[http://www.cs.cmu.edu/Groups/AI/html/cltl/cltl2.html][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (870 . 0.210671)
+:END:
+
+******* Link on page 870: [[http://dspace.mit.edu/handle/1721.1/5794][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (870 . 0.2871)
+:END:
+
+******* Link on page 870: [[http://www.dourish.com/goodies/jargon.html][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (870 . 0.363528)
+:END:
+
+******* Link on page 870: [[http://dspace.mit.edu/handle/1721.1/5803][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (870 . 0.49091)
+:END:
+
+******* Link on page 870: [[http://dspace.mit.edu/handle/1721.1/6312][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (870 . 0.567339)
+:END:
+
+******* Link on page 870: [[http://groups.csail.mit.edu/mac/users/wisdom/ss-chaos.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (870 . 0.618291)
+:END:
+
+******* Link on page 870: [[http://dspace.mit.edu/handle/1721.1/6184][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (870 . 0.694721)
+:END:
+
+******* Link on page 870: [[https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-574.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (870 . 0.771149)
+:END:
+
+******* Link on page 870: [[http://www.softwarepreservation.org/projects/LISP/interlisp/Interlisp-Oct_1974.pdf/view][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (870 . 0.822101)
+:END:
+
+******* Link on page 871: [[http://www.diku.dk/OLD/undervisning/2005e/224/papers/Wand80.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (871 . 0.312576)
+:END:
+
+******* Link on page 871: [[http://dspace.mit.edu/handle/1721.1/7095][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (871 . 0.439958)
+:END:
+
+******* Link on page 871: [[http://www.aaai.org/Papers/AAAI/1987/AAAI87-011.pdf][–›]]
+:PROPERTIES:
+:NOTER_PAGE: (871 . 0.567339)
+:END:
+
+****** List of Exercises
+:PROPERTIES:
+:NOTER_PAGE: (872 . 0.106602)
+:END:
+
+****** List of Figures
+:PROPERTIES:
+:NOTER_PAGE: (874 . 0.106602)
+:END:
+
+****** Index
+:PROPERTIES:
+:NOTER_PAGE: (876 . 0.106602)
+:END:
+
+****** Colophon
+:PROPERTIES:
+:NOTER_PAGE: (883 . 0.106602)
+:END:
+
+******* Link on page 883: [[http://newgottland.com/2012/02/09/before-the-ereader-there-was-the-wheelreader/ramelli_bookwheel_1032px/][New Goland]]
+:PROPERTIES:
+:NOTER_PAGE: (883 . 0.391639)
+:END:
+
+
+
+**** Notes on sicp-pocket.pdf
+:PROPERTIES:
+:NOTER_DOCUMENT: /home/laurent/Downloads/sicp-pocket.pdf
+:END:
+
+***** Skeleton
+
+****** Link on page 2: [[http://mitpress.mit.edu/sicp/][mitpress.mit.edu]]
+:PROPERTIES:
+:NOTER_PAGE: (2 . 0.568176)
+:END:
+
+****** Link on page 2: [[http://creativecommons.org/licenses/by-sa/3.0/][CC BY-SA 3.0]]
+:PROPERTIES:
+:NOTER_PAGE: (2 . 0.568176)
+:END:
+
+****** Link on page 2: [[http://sicpebook.wordpress.com][2.andresraba4]]
+:PROPERTIES:
+:NOTER_PAGE: (2 . 0.882385)
+:END:
+
+****** Link on page 2: [[http://www.neilvandyke.org/sicp-texi/][2.neilvandyke4]]
+:PROPERTIES:
+:NOTER_PAGE: (2 . 0.915876)
+:END:
+
+****** Unofficial Texinfo Format
+:PROPERTIES:
+:NOTER_PAGE: (11 . 0.040909)
+:END:
+
+******* Link on page 13: [[http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-001-structure-and-interpretation-of-computer-programs-spring-2005/video-lectures/][MIT OCW]]
+:PROPERTIES:
+:NOTER_PAGE: (13 . 0.074413)
+:END:
+
+******* Link on page 13: [[http://groups.csail.mit.edu/mac/classes/6.001/abelson-sussman-lectures/][MIT CSAIL]]
+:PROPERTIES:
+:NOTER_PAGE: (13 . 0.074413)
+:END:
+
+****** Dedication
+:PROPERTIES:
+:NOTER_PAGE: (14 . 0.040909)
+:END:
+
+****** Foreword
+:PROPERTIES:
+:NOTER_PAGE: (15 . 0.040909)
+:END:
+
+****** Preface to the Second Edition
+:PROPERTIES:
+:NOTER_PAGE: (23 . 0.040909)
+:END:
+
+******* Link on page 24: [[http://mitpress.mit.edu/sicp][http://mitpress.mit.edu]]
+:PROPERTIES:
+:NOTER_PAGE: (24 . 0.788235)
+:END:
+
+******* Link on page 24: [[http://mitpress.mit.edu/sicp][/sicp]]
+:PROPERTIES:
+:NOTER_PAGE: (24 . 0.821728)
+:END:
+
+****** Preface to the First Edition
+:PROPERTIES:
+:NOTER_PAGE: (25 . 0.040909)
+:END:
+
+****** Acknowledgements
+:PROPERTIES:
+:NOTER_PAGE: (30 . 0.040909)
+:END:
+
+****** Building Abstractions with Procedures
+:PROPERTIES:
+:NOTER_PAGE: (35 . 0.040909)
+:END:
+
+******* The Elements of Programming
+:PROPERTIES:
+:NOTER_PAGE: (41 . 0.392352)
+:END:
+
+******** Expressions
+:PROPERTIES:
+:NOTER_PAGE: (43 . 0.128256)
+:END:
+
+******** Naming and the Environment
+:PROPERTIES:
+:NOTER_PAGE: (46 . 0.493033)
+:END:
+
+******** Evaluating Combinations
+:PROPERTIES:
+:NOTER_PAGE: (48 . 0.730694)
+:END:
+
+******** Compound Procedures
+:PROPERTIES:
+:NOTER_PAGE: (53 . 0.040909)
+:END:
+
+******** The Substitution Model for Procedure Application
+:PROPERTIES:
+:NOTER_PAGE: (56 . 0.364561)
+:END:
+
+******** Conditional Expressions and Predicates
+:PROPERTIES:
+:NOTER_PAGE: (61 . 0.326241)
+:END:
+
+******** Example: Square Roots by Newton's Method
+:PROPERTIES:
+:NOTER_PAGE: (68 . 0.391152)
+:END:
+
+******** Procedures as Black-Box Abstractions
+:PROPERTIES:
+:NOTER_PAGE: (75 . 0.432877)
+:END:
+
+******* Procedures and the Processes They Generate
+:PROPERTIES:
+:NOTER_PAGE: (83 . 0.515342)
+:END:
+the procedure definition binds its formal parameters.
+In a procedure definition, the bound variables de-clared as the formal parameters of the procedure have thebody of the procedure as their scope.
+
+Knowing the rules is not enough, we should know the consequences of our procedure on the processes they trigger:
+To become experts, we mustlearn to visualize the processes generated by various typesof procedures
+
+******** Linear Recursion and Iteration
+:PROPERTIES:
+:NOTER_PAGE: (85 . 0.465186)
+:END:
+
+******** Tree Recursion
+:PROPERTIES:
+:NOTER_PAGE: (93 . 0.32732)
+:END:
+
+******** Orders of Growth
+:PROPERTIES:
+:NOTER_PAGE: (102 . 0.040909)
+:END:
+
+******** Exponentiation
+:PROPERTIES:
+:NOTER_PAGE: (105 . 0.401599)
+:END:
+
+******** Greatest Common Divisors
+:PROPERTIES:
+:NOTER_PAGE: (112 . 0.040909)
+:END:
+
+******** Example: Testing for Primality
+:PROPERTIES:
+:NOTER_PAGE: (115 . 0.666326)
+:END:
+
+******* Formulating Abstractions with Higher-Order Procedures
+:PROPERTIES:
+:NOTER_PAGE: (128 . 0.040909)
+:END:
+
+******** Procedures as Arguments
+:PROPERTIES:
+:NOTER_PAGE: (129 . 0.478283)
+:END:
+
+******** Constructing Procedures Using Lambda
+:PROPERTIES:
+:NOTER_PAGE: (137 . 0.533932)
+:END:
+This construct is so useful that there is a special form called
+let to make its use more convenient. Using let , the f pro-
+cedure could be written as:
+
+#+BEGIN_SRC common-lisp
+(define (f x y)
+(let ((a (+ 1 (* x y)))
+(b (- 1 y)))
+(+ (* x (square a))
+(* y b)
+(* a b))))
+;;;The general form of a let expression is
+(let (( 〈v ar 1 〉 〈exp 1 〉 )
+( 〈v ar 2 〉 〈exp 2 〉 )
+...
+( 〈v ar n 〉 〈exp n 〉 ))
+〈 body 〉 )
+;;;which can be thought of as saying
+;;;let 〈v ar 1 〉 have the value 〈exp 1 〉 and
+;;;〈v ar 2 〉 have the value 〈exp 2 〉 and
+;;;...
+;;;in
+;;;〈v ar n 〉 have the value 〈exp n 〉
+;;;〈 body 〉
+#+END_SRC
+******** Procedures as General Methods
+:PROPERTIES:
+:NOTER_PAGE: (144 . 0.371458)
+:END:
+
+******** Procedures as Returned Values
+:PROPERTIES:
+:NOTER_PAGE: (154 . 0.040909)
+:END:
+
+****** Building Abstractions with Data
+:PROPERTIES:
+:NOTER_PAGE: (166 . 0.040909)
+:END:
+
+******* Introduction to Data Abstraction
+:PROPERTIES:
+:NOTER_PAGE: (173 . 0.040909)
+:END:
+
+******** Example: Arithmetic Operations for Rational Numbers
+:PROPERTIES:
+:NOTER_PAGE: (174 . 0.167055)
+:END:
+
+******** Abstraction Barriers
+:PROPERTIES:
+:NOTER_PAGE: (181 . 0.040909)
+:END:
+
+******** What Is Meant by Data?
+:PROPERTIES:
+:NOTER_PAGE: (185 . 0.704534)
+:END:
+
+******** Extended Exercise: Interval Arithmetic
+:PROPERTIES:
+:NOTER_PAGE: (191 . 0.040909)
+:END:
+
+******* Hierarchical Data and the Closure Property
+:PROPERTIES:
+:NOTER_PAGE: (198 . 0.42355)
+:END:
+
+******** Representing Sequences
+:PROPERTIES:
+:NOTER_PAGE: (201 . 0.040909)
+:END:
+
+******** Hierarchical Structures
+:PROPERTIES:
+:NOTER_PAGE: (216 . 0.413706)
+:END:
+
+******** Sequences as Conventional Interfaces
+:PROPERTIES:
+:NOTER_PAGE: (225 . 0.431779)
+:END:
+
+******** Example: A Picture Language
+:PROPERTIES:
+:NOTER_PAGE: (249 . 0.460772)
+:END:
+
+******* Symbolic Data
+:PROPERTIES:
+:NOTER_PAGE: (274 . 0.52164)
+:END:
+
+******** Quotation
+:PROPERTIES:
+:NOTER_PAGE: (274 . 0.761345)
+:END:
+
+******** Example: Symbolic Differentiation
+:PROPERTIES:
+:NOTER_PAGE: (280 . 0.310283)
+:END:
+
+******** Example: Representing Sets
+:PROPERTIES:
+:NOTER_PAGE: (290 . 0.040909)
+:END:
+
+******** Example: Huffman Encoding Trees
+:PROPERTIES:
+:NOTER_PAGE: (307 . 0.771518)
+:END:
+
+******* Multiple Representations for Abstract Data
+:PROPERTIES:
+:NOTER_PAGE: (322 . 0.465251)
+:END:
+
+******** Representations for Complex Numbers
+:PROPERTIES:
+:NOTER_PAGE: (326 . 0.299706)
+:END:
+
+******** Tagged data
+:PROPERTIES:
+:NOTER_PAGE: (332 . 0.604059)
+:END:
+
+******** Data-Directed Programming and Additivity
+:PROPERTIES:
+:NOTER_PAGE: (339 . 0.8072)
+:END:
+
+******* Systems with Generic Operations
+:PROPERTIES:
+:NOTER_PAGE: (355 . 0.331433)
+:END:
+
+******** Generic Arithmetic Operations
+:PROPERTIES:
+:NOTER_PAGE: (357 . 0.040909)
+:END:
+
+******** Combining Data of Different Types
+:PROPERTIES:
+:NOTER_PAGE: (365 . 0.804721)
+:END:
+
+******** Example: Symbolic Algebra
+:PROPERTIES:
+:NOTER_PAGE: (381 . 0.430764)
+:END:
+
+****** Modularity, Objects, and State
+:PROPERTIES:
+:NOTER_PAGE: (407 . 0.040909)
+:END:
+
+******* Assignment and Local State
+:PROPERTIES:
+:NOTER_PAGE: (409 . 0.388348)
+:END:
+
+******** Local State Variables
+:PROPERTIES:
+:NOTER_PAGE: (410 . 0.771518)
+:END:
+
+******** The Benefits of Introducing Assignment
+:PROPERTIES:
+:NOTER_PAGE: (421 . 0.127268)
+:END:
+
+******** The Costs of Introducing Assignment
+:PROPERTIES:
+:NOTER_PAGE: (429 . 0.040909)
+:END:
+
+******* The Environment Model of Evaluation
+:PROPERTIES:
+:NOTER_PAGE: (440 . 0.514877)
+:END:
+
+******** The Rules for Evaluation
+:PROPERTIES:
+:NOTER_PAGE: (443 . 0.300223)
+:END:
+
+******** Applying Simple Procedures
+:PROPERTIES:
+:NOTER_PAGE: (448 . 0.593939)
+:END:
+
+******** Frames as the Repository of Local State
+:PROPERTIES:
+:NOTER_PAGE: (453 . 0.040909)
+:END:
+
+******** Internal Definitions
+:PROPERTIES:
+:NOTER_PAGE: (460 . 0.693903)
+:END:
+
+******* Modeling with Mutable Data
+:PROPERTIES:
+:NOTER_PAGE: (465 . 0.526884)
+:END:
+
+******** Mutable List Structure
+:PROPERTIES:
+:NOTER_PAGE: (466 . 0.805011)
+:END:
+
+******** Representing Queues
+:PROPERTIES:
+:NOTER_PAGE: (481 . 0.558209)
+:END:
+
+******** Representing Tables
+:PROPERTIES:
+:NOTER_PAGE: (490 . 0.259124)
+:END:
+
+******** A Simulator for Digital Circuits
+:PROPERTIES:
+:NOTER_PAGE: (501 . 0.26179)
+:END:
+
+******** Propagation of Constraints
+:PROPERTIES:
+:NOTER_PAGE: (522 . 0.30386)
+:END:
+
+******* Concurrency: Time Is of the Essence
+:PROPERTIES:
+:NOTER_PAGE: (542 . 0.040909)
+:END:
+
+******** The Nature of Time in Concurrent Systems
+:PROPERTIES:
+:NOTER_PAGE: (545 . 0.040909)
+:END:
+
+******** Mechanisms for Controlling Concurrency
+:PROPERTIES:
+:NOTER_PAGE: (553 . 0.606248)
+:END:
+
+******* Streams
+:PROPERTIES:
+:NOTER_PAGE: (578 . 0.409298)
+:END:
+
+******** Streams Are Delayed Lists
+:PROPERTIES:
+:NOTER_PAGE: (580 . 0.567145)
+:END:
+
+******** Infinite Streams
+:PROPERTIES:
+:NOTER_PAGE: (596 . 0.040909)
+:END:
+
+******** Exploiting the Stream Paradigm
+:PROPERTIES:
+:NOTER_PAGE: (610 . 0.040909)
+:END:
+
+******** Streams and Delayed Evaluation
+:PROPERTIES:
+:NOTER_PAGE: (631 . 0.463248)
+:END:
+
+******** Modularity of Functional Programs and Modularity of Objects
+:PROPERTIES:
+:NOTER_PAGE: (642 . 0.124795)
+:END:
+
+****** Metalinguistic Abstraction
+:PROPERTIES:
+:NOTER_PAGE: (652 . 0.040909)
+:END:
+
+******* The Metacircular Evaluator
+:PROPERTIES:
+:NOTER_PAGE: (658 . 0.407552)
+:END:
+
+******** The Core of the Evaluator
+:PROPERTIES:
+:NOTER_PAGE: (661 . 0.698963)
+:END:
+
+******** Representing Expressions
+:PROPERTIES:
+:NOTER_PAGE: (670 . 0.318209)
+:END:
+
+******** Evaluator Data Structures
+:PROPERTIES:
+:NOTER_PAGE: (683 . 0.269347)
+:END:
+
+******** Running the Evaluator as a Program
+:PROPERTIES:
+:NOTER_PAGE: (690 . 0.838502)
+:END:
+
+******** Data as Programs
+:PROPERTIES:
+:NOTER_PAGE: (696 . 0.566717)
+:END:
+
+******** Internal Definitions
+:PROPERTIES:
+:NOTER_PAGE: (702 . 0.191389)
+:END:
+
+******** Separating Syntactic Analysis from Execution
+:PROPERTIES:
+:NOTER_PAGE: (713 . 0.040909)
+:END:
+
+******* Variations on a Scheme --- Lazy Evaluation
+:PROPERTIES:
+:NOTER_PAGE: (722 . 0.040909)
+:END:
+
+******** Normal Order and Applicative Order
+:PROPERTIES:
+:NOTER_PAGE: (723 . 0.140044)
+:END:
+
+******** An Interpreter with Lazy Evaluation
+:PROPERTIES:
+:NOTER_PAGE: (726 . 0.737737)
+:END:
+
+******** Streams as Lazy Lists
+:PROPERTIES:
+:NOTER_PAGE: (740 . 0.637262)
+:END:
+
+******* Variations on a Scheme --- Nondeterministic Computing
+:PROPERTIES:
+:NOTER_PAGE: (745 . 0.147407)
+:END:
+
+******** Amb and Search
+:PROPERTIES:
+:NOTER_PAGE: (748 . 0.64542)
+:END:
+
+******** Examples of Nondeterministic Programs
+:PROPERTIES:
+:NOTER_PAGE: (756 . 0.703136)
+:END:
+
+******** Implementing the Amb Evaluator
+:PROPERTIES:
+:NOTER_PAGE: (771 . 0.040909)
+:END:
+
+******* Logic Programming
+:PROPERTIES:
+:NOTER_PAGE: (791 . 0.529601)
+:END:
+
+******** Deductive Information Retrieval
+:PROPERTIES:
+:NOTER_PAGE: (798 . 0.040909)
+:END:
+
+******** How the Query System Works
+:PROPERTIES:
+:NOTER_PAGE: (817 . 0.670754)
+:END:
+
+******** Is Logic Programming Mathematical Logic?
+:PROPERTIES:
+:NOTER_PAGE: (833 . 0.040909)
+:END:
+
+******** Implementing the Query System
+:PROPERTIES:
+:NOTER_PAGE: (843 . 0.530423)
+:END:
+
+********* The Driver Loop and Instantiation
+:PROPERTIES:
+:NOTER_PAGE: (843 . 0.704534)
+:END:
+
+********* The Evaluator
+:PROPERTIES:
+:NOTER_PAGE: (846 . 0.765682)
+:END:
+
+********* Finding Assertions by Pattern Matching
+:PROPERTIES:
+:NOTER_PAGE: (852 . 0.23355)
+:END:
+
+********* Rules and Unification
+:PROPERTIES:
+:NOTER_PAGE: (856 . 0.801938)
+:END:
+
+********* Maintaining the Data Base
+:PROPERTIES:
+:NOTER_PAGE: (864 . 0.468693)
+:END:
+
+********* Stream Operations
+:PROPERTIES:
+:NOTER_PAGE: (869 . 0.494222)
+:END:
+
+********* Query Syntax Procedures
+:PROPERTIES:
+:NOTER_PAGE: (871 . 0.212563)
+:END:
+
+********* Frames and Bindings
+:PROPERTIES:
+:NOTER_PAGE: (875 . 0.492064)
+:END:
+
+****** Computing with Register Machines
+:PROPERTIES:
+:NOTER_PAGE: (883 . 0.040909)
+:END:
+
+******* Designing Register Machines
+:PROPERTIES:
+:NOTER_PAGE: (886 . 0.040909)
+:END:
+
+******** A Language for Describing Register Machines
+:PROPERTIES:
+:NOTER_PAGE: (891 . 0.040909)
+:END:
+
+******** Abstraction in Machine Design
+:PROPERTIES:
+:NOTER_PAGE: (898 . 0.570278)
+:END:
+
+******** Subroutines
+:PROPERTIES:
+:NOTER_PAGE: (903 . 0.040909)
+:END:
+
+******** Using a Stack to Implement Recursion
+:PROPERTIES:
+:NOTER_PAGE: (908 . 0.603771)
+:END:
+
+******** Instruction Summary
+:PROPERTIES:
+:NOTER_PAGE: (919 . 0.040909)
+:END:
+
+******* A Register-Machine Simulator
+:PROPERTIES:
+:NOTER_PAGE: (920 . 0.46569)
+:END:
+
+******** The Machine Model
+:PROPERTIES:
+:NOTER_PAGE: (923 . 0.292513)
+:END:
+
+******** The Assembler
+:PROPERTIES:
+:NOTER_PAGE: (931 . 0.636152)
+:END:
+
+******** Generating Execution Procedures for Instructions
+:PROPERTIES:
+:NOTER_PAGE: (938 . 0.299366)
+:END:
+
+******** Monitoring Machine Performance
+:PROPERTIES:
+:NOTER_PAGE: (952 . 0.298355)
+:END:
+
+******* Storage Allocation and Garbage Collection
+:PROPERTIES:
+:NOTER_PAGE: (957 . 0.565726)
+:END:
+
+******** Memory as Vectors
+:PROPERTIES:
+:NOTER_PAGE: (959 . 0.040909)
+:END:
+
+******** Maintaining the Illusion of Infinite Memory
+:PROPERTIES:
+:NOTER_PAGE: (969 . 0.507069)
+:END:
+
+******* The Explicit-Control Evaluator
+:PROPERTIES:
+:NOTER_PAGE: (982 . 0.129372)
+:END:
+
+******** The Core of the Explicit-Control Evaluator
+:PROPERTIES:
+:NOTER_PAGE: (985 . 0.430554)
+:END:
+
+******** Sequence Evaluation and Tail Recursion
+:PROPERTIES:
+:NOTER_PAGE: (997 . 0.271495)
+:END:
+
+******** Conditionals, Assignments, and Definitions
+:PROPERTIES:
+:NOTER_PAGE: (1003 . 0.040909)
+:END:
+
+******** Running the Evaluator
+:PROPERTIES:
+:NOTER_PAGE: (1007 . 0.397271)
+:END:
+
+******* Compilation
+:PROPERTIES:
+:NOTER_PAGE: (1018 . 0.040909)
+:END:
+
+******** Structure of the Compiler
+:PROPERTIES:
+:NOTER_PAGE: (1024 . 0.637551)
+:END:
+
+******** Compiling Expressions
+:PROPERTIES:
+:NOTER_PAGE: (1033 . 0.396534)
+:END:
+
+******** Compiling Combinations
+:PROPERTIES:
+:NOTER_PAGE: (1046 . 0.731531)
+:END:
+
+******** Combining Instruction Sequences
+:PROPERTIES:
+:NOTER_PAGE: (1061 . 0.040909)
+:END:
+
+******** An Example of Compiled Code
+:PROPERTIES:
+:NOTER_PAGE: (1067 . 0.380611)
+:END:
+
+******** Lexical Addressing
+:PROPERTIES:
+:NOTER_PAGE: (1086 . 0.47185)
+:END:
+
+******** Interfacing Compiled Code to the Evaluator
+:PROPERTIES:
+:NOTER_PAGE: (1094 . 0.040909)
+:END:
+
+****** References
+:PROPERTIES:
+:NOTER_PAGE: (1108 . 0.040909)
+:END:
+
+******* Link on page 1108: [[http://www.hpl.hp.com/techreports/94/HPL-94-30.html][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1108 . 0.28771)
+:END:
+
+******* Link on page 1108: [[http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.39.8219][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1108 . 0.538696)
+:END:
+
+******* Link on page 1108: [[http://www.stanford.edu/class/cs242/readings/backus.pdf][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1108 . 0.643)
+:END:
+
+******* Link on page 1108: [[http://dspace.mit.edu/handle/1721.1/41976][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1108 . 0.750677)
+:END:
+
+******* Link on page 1109: [[http://ijcai.org/Past%20Proceedings/IJCAI-77-VOL1/PDF/085.pdf][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1109 . 0.141548)
+:END:
+
+******* Link on page 1109: [[http://www.doc.ic.ac.uk/~klc/neg.html][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1109 . 0.541866)
+:END:
+
+******* Link on page 1109: [[http://mumble.net/~jar/pubs/macros_that_work.ps][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1109 . 0.772546)
+:END:
+
+******* Link on page 1110: [[http://www.cs.utexas.edu/users/EWD/ewd01xx/EWD196.PDF][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1110 . 0.319604)
+:END:
+
+******* Link on page 1110: [[http://www.cs.utexas.edu/users/EWD/ewd01xx/EWD123.PDF][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1110 . 0.425819)
+:END:
+
+******* Link on page 1110: [[http://dspace.mit.edu/handle/1721.1/5750][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1110 . 0.637932)
+:END:
+
+******* Link on page 1110: [[http://dspace.mit.edu/handle/1721.1/5733][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1110 . 0.710417)
+:END:
+
+******* Link on page 1111: [[http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.90.6978][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1111 . 0.109339)
+:END:
+
+******* Link on page 1111: [[https://www.cs.indiana.edu/cgi-bin/techreports/TRNNN.cgi?trnum=TR44][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1111 . 0.639216)
+:END:
+
+******* Link on page 1111: [[http://www.dreamsongs.com/Files/WhyOfY.pdf][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1111 . 0.817675)
+:END:
+
+******* Link on page 1112: [[http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.81.9820][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1112 . 0.320006)
+:END:
+
+******* Link on page 1112: [[http://www-sst.informatik.tu-cottbus.de/~db/doc/People/Broy/Software-Pioneers/Guttag_hist.pdf][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1112 . 0.671023)
+:END:
+
+******* Link on page 1112: [[ftp://ftp.cs.indiana.edu/pub/scheme-repository/doc/prop/synclo.ps.gz][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1112 . 0.921965)
+:END:
+
+******* Link on page 1113: [[http://users.ecs.soton.ac.uk/ph/papers/funcgeo2.pdf][(2002]]
+:PROPERTIES:
+:NOTER_PAGE: (1113 . 0.55839)
+:END:
+
+******* Link on page 1113: [[http://users.ecs.soton.ac.uk/ph/funcgeo.pdf][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1113 . 0.55839)
+:END:
+
+******* Link on page 1113: [[http://users.ecs.soton.ac.uk/ph/papers/funcgeo2.pdf][version)]]
+:PROPERTIES:
+:NOTER_PAGE: (1113 . 0.593862)
+:END:
+
+******* Link on page 1113: [[http://dspace.mit.edu/handle/1721.1/6171][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1113 . 0.737516)
+:END:
+
+******* Link on page 1113: [[http://dspace.mit.edu/handle/1721.1/6272][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1113 . 0.845295)
+:END:
+
+******* Link on page 1114: [[http://www.cs.kent.ac.uk/people/staff/dat/miranda/whyfp90.pdf][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1114 . 0.308507)
+:END:
+
+******* Link on page 1115: [[http://www.ccs.neu.edu/scheme/pubs/dissertation-kohlbecker.pdf][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1115 . 0.107893)
+:END:
+
+******* Link on page 1115: [[http://www.doc.ic.ac.uk/~rak/papers/IFIP%2074.pdf][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1115 . 0.388398)
+:END:
+
+******* Link on page 1115: [[http://www.stanford.edu/class/cs240/readings/lamport.pdf][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1115 . 0.56819)
+:END:
+
+******* Link on page 1115: [[http://www.bitsavers.org/pdf/xerox/parc/techReports/CSL-81-12_Report_On_The_Programming_Language_Euclid.pdf][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1115 . 0.708682)
+:END:
+
+******* Link on page 1115: [[http://dspace.mit.edu/handle/1721.1/6335][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1115 . 0.921965)
+:END:
+
+******* Link on page 1116: [[http://csg.csail.mit.edu/CSGArchives/memos/Memo-117.pdf][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1116 . 0.107653)
+:END:
+
+******* Link on page 1116: [[http://dspace.mit.edu/handle/1721.1/6296][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1116 . 0.219438)
+:END:
+
+******* Link on page 1116: [[http://dspace.mit.edu/handle/1721.1/6327][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1116 . 0.333127)
+:END:
+
+******* Link on page 1116: [[http://www-formal.stanford.edu/jmc/recursive.html][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1116 . 0.44229)
+:END:
+
+******* Link on page 1116: [[http://www-formal.stanford.edu/jmc/basis.html][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1116 . 0.587566)
+:END:
+
+******* Link on page 1116: [[http://www-formal.stanford.edu/jmc/history/lisp.html][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1116 . 0.699729)
+:END:
+
+******* Link on page 1116: [[http://www.softwarepreservation.org/projects/LISP/book/LISP%201.5%20Programmers%20Manual.pdf/view][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1116 . 0.810658)
+:END:
+
+******* Link on page 1116: [[http://dspace.mit.edu/handle/1721.1/6203][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1116 . 0.922203)
+:END:
+
+******* Link on page 1117: [[http://www.cs.cmu.edu/~glmiller/Publications/b2hd-Mi76.html][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1117 . 0.109339)
+:END:
+
+******* Link on page 1117: [[http://dspace.mit.edu/handle/1721.1/6622][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1117 . 0.218054)
+:END:
+
+******* Link on page 1117: [[http://www.softwarepreservation.org/projects/LISP/MIT/Moon-MACLISP_Reference_Manual-Apr_08_1974.pdf/view][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1117 . 0.33036)
+:END:
+
+******* Link on page 1117: [[http://www.unlambda.com/lmman/index.html][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1117 . 0.440522)
+:END:
+
+******* Link on page 1117: [[http://maclisp.info/pitmanual][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1117 . 0.768864)
+:END:
+
+******* Link on page 1117: [[http://www.outpost9.com/reference/jargon/jargon_toc.html][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1117 . 0.922203)
+:END:
+
+******* Link on page 1118: [[http://people.csail.mit.edu/riastradh/t/adams82t.pdf][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1118 . 0.214031)
+:END:
+
+******* Link on page 1118: [[http://people.csail.mit.edu/jaffer/r4rs_toc.html][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1118 . 0.319604)
+:END:
+
+******* Link on page 1118: [[http://people.csail.mit.edu/rivest/Rsapaper.pdf][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1118 . 0.45931)
+:END:
+
+******* Link on page 1118: [[http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.123.8503&rep=rep1&type=pdf][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1118 . 0.712396)
+:END:
+
+******* Link on page 1118: [[http://dspace.mit.edu/handle/1721.1/5753][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1118 . 0.816392)
+:END:
+
+******* Link on page 1119: [[http://www.cs.cmu.edu/Groups/AI/html/cltl/cltl2.html][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1119 . 0.0744)
+:END:
+
+******* Link on page 1119: [[http://dspace.mit.edu/handle/1721.1/5794][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1119 . 0.221581)
+:END:
+
+******* Link on page 1119: [[http://www.dourish.com/goodies/jargon.html][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1119 . 0.365922)
+:END:
+
+******* Link on page 1119: [[http://dspace.mit.edu/handle/1721.1/5803][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1119 . 0.589014)
+:END:
+
+******* Link on page 1119: [[http://dspace.mit.edu/handle/1721.1/6312][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1119 . 0.699113)
+:END:
+
+******* Link on page 1119: [[http://groups.csail.mit.edu/mac/users/wisdom/ss-chaos.pdf][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1119 . 0.812801)
+:END:
+
+******* Link on page 1119: [[http://dspace.mit.edu/handle/1721.1/6184][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1119 . 0.922203)
+:END:
+
+******* Link on page 1120: [[http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.10.4290][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1120 . 0.107893)
+:END:
+
+******* Link on page 1120: [[http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.83.8567][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1120 . 0.603366)
+:END:
+
+******* Link on page 1120: [[http://dspace.mit.edu/handle/1721.1/7095][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1120 . 0.848935)
+:END:
+
+******* Link on page 1121: [[http://www.aaai.org/Papers/AAAI/1987/AAAI87-011.pdf][(Online)]]
+:PROPERTIES:
+:NOTER_PAGE: (1121 . 0.107893)
+:END:
+
+****** List of Exercises
+:PROPERTIES:
+:NOTER_PAGE: (1122 . 0.040909)
+:END:
+
+****** List of Figures
+:PROPERTIES:
+:NOTER_PAGE: (1124 . 0.040909)
+:END:
+
+****** Index
+:PROPERTIES:
+:NOTER_PAGE: (1125 . 0.040909)
+:END:
+.
