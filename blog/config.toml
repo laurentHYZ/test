@@ -1,5 +1,5 @@
 baseURL = "https://laurenthyz.github.io/blog/"
-title = "laurent PINPIN"
+title = "laurent P."
 
 theme = "hugo-coder"
 
@@ -15,7 +15,7 @@ pygmentsCodeFencesGuessSyntax = true
 disqusShortname = "yourdiscussshortname"
 
 [params]
-    author = "Laurent PINSON"
+    author = "Laurent PIN"
     description = "Laurent PINSON's personal website"
     keywords = "blog,developer,personal"
     info = "Full Stack DevOps and Magician"
