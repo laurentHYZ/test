@@ -1,2 +1,0 @@
-this is hello .txt file
-this is the second line from hello.txt
